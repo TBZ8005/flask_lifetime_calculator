@@ -1,0 +1,126 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Flasky{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+        $(document).ready(function(){  
+            //查询按钮事件  
+            $("#submit").off().on("click",function(){
+                alert("calculating");
+                x0 = $('#x0').val();
+                x1 = $('#x1').val();
+                x2 = $('#x2').val();
+                x3 = $('#x3').val();
+                y0 = $('#y0').val();
+                y1 = $('#y1').val();
+                y2 = $('#y2').val();
+                y3 = $('#y3').val();
+                var send_info = {
+                      'x0': x0,
+                      'x1': x1,
+                      'x2': x2,
+                      'x3': x3,
+                      'y0': y0,
+                      'y1': y1,
+                      'y2': y2,
+                      'y3': y3,
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("calc")}}',
+                    data: JSON.stringify(send_info),
+                    dataType: 'json',
+                    success: function(responseData, textStatus) {
+                        var lifetime = eval ("("+responseData.lifetime+")");
+                        alert("lifetime is: "+lifetime+" years");
+                        console.log(responseData);
+                        // console.log(responseData.responseText);
+                        },
+                    error: function(responseData, textStatus, errorThrown) {
+                        console.log(responseData);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        console.log(responseData.responseText);
+                        alert("internet error");
+                    }
+                });
+            });  
+        });
+</script>
+{% endblock %}
+{% block content %}
+
+<head>
+    <meta charset="utf-8">
+
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <form class="bs-example bs-example-form" role="form">
+                <div class="row">
+                    <div class = "col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">x0</span>
+                            <input type="number" class="form-control" id = "x0" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">y0</span>
+                            <input type="number" class="form-control" id = "y0" placeholder="0.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class = "col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">x1</span>
+                            <input type="number" class="form-control" id = "x1" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">y1</span>
+                            <input type="number" class="form-control" id = "y1" placeholder="0.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class = "col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">x2</span>
+                            <input type="number" class="form-control" id = "x2" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">y2</span>
+                            <input type="number" class="form-control" id = "y2" placeholder="0.0">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class = "col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">x3</span>
+                            <input type="number" class="form-control" id = "x3" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">y3</span>
+                            <input type="number" class="form-control" id = "y3" placeholder="0.0">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button type="submit" class="btn btn-info" id = "submit">信息按钮</button>
+        </div>
+    </div>
+</body>
+
+
+{% endblock %}
